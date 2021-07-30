@@ -1,0 +1,42 @@
+﻿@model List<WebApplication1.Models.Material.StoreStorge>
+
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <h4 class="modal-title" id="myModalLabel">門市庫存查詢</h4>
+</div>
+
+<table class="table table table-striped">
+    <thead>
+        <tr>
+            <th width="70">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StoreID)
+            </th>
+            <th  width="70">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Storage)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var md in this.Model)
+        {
+            <tr>
+                <td  width="70">@md.StoreID</td>
+                <td  width="70">@md.Storage</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary" data-dismiss="modal">返回頁面</button>
+</div>
+
+<style type="text/css">
+    th {
+        display: table-cell;
+        vertical-align: inherit;
+        font-weight: bold;
+        text-align: center;
+    }
+</style>

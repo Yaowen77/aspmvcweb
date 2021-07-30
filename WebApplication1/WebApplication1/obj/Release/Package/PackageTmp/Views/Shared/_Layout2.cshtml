@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Npos 管理系統</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Npos 管理系統", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本資料<b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("商品類別", "Index", "Category", new {type = 0 }, new {})</li>
+                            <li>@Html.ActionLink("廠商資料", "Index", "Home")</li>
+                            <li>@Html.ActionLink("商品基本資料", "Index", "Material", new { type = 0 }, new { })</li>
+                        </ul>
+                    </li>
+
+                    <li>@Html.ActionLink("會員資料", "Index", "Member")</li>
+                    <li>@Html.ActionLink("採購進貨", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("批發銷貨", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("庫存異動", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("門市營運", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("營運報表", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("登出", "Logout", "Login")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - Npos</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

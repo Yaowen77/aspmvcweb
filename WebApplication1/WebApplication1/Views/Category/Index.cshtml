@@ -1,0 +1,120 @@
+﻿@model IEnumerable<WebApplication1.Models.Category.Category>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<h2>類別資料管理作業</h2>
+<br />
+
+@if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
+{
+    //@Html.Label("info", (string)ViewBag.ResultMessage, new { @class = "text-info" })
+    <script type="text/javascript">
+            var message = @Html.Raw(Json.Encode(ViewBag.ResultMessage));
+            alert(message);
+    </script>
+}
+
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Category", new { Type = ViewBag.Type }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            <div class="table-responsive">
+                <div id="toolbar">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">類別編號</div>
+                                <input type="text" class="form-control" name="id" id="searchTexts" placeholder="請輸入類別編號">
+                                <div class="column">
+                                    <button type="submit" class="btn btn-primary queryButton"> 搜尋</button>
+                                    @Html.ActionLink("新增類別", "Create", new { type = ViewBag.Type }, new { @class = "btn btn-primary" })
+                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Category')">
+                                        匯出資料
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+<ul class="nav nav-pills nav-justified">
+    <li class=@ViewBag.CategoryType0>
+        @Html.ActionLink("類別一", "Index", "Category", new { type = 0 }, new { })
+    </li>
+    <li class=@ViewBag.CategoryType1>
+        @Html.ActionLink("類別二", "Index", "Category", new { type = 1 }, new { })
+    </li>
+    <li class=@ViewBag.CategoryType2>
+        @Html.ActionLink("類別三", "Index", "Category", new { type = 2 }, new { })
+    </li>
+    <li class=@ViewBag.CategoryType3>
+        @Html.ActionLink("類別四", "Index", "Category", new { type = 3 }, new { })
+    </li>
+</ul>
+
+
+<table class="table">
+    <tr>
+        <th width="70">
+            操作
+        </th>
+        <th width="70">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CategoryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CategoryName)
+        </th>
+        <th>
+
+        </th>
+    </tr>
+    @foreach (var md in this.Model)
+    {
+        <tr>
+            <td>
+                @Html.ActionLink("編輯", "Edit", new { Type = ViewBag.Type, categoryID = md.CategoryID }, new { @class = "glyphicon glyphicon-pencil" })
+            </td>
+            <td>
+
+                @Html.ActionLink("刪除", "Delete", new { Type = ViewBag.Type, categoryID = md.CategoryID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('"+ md.CategoryID + "')" })
+            </td>
+            <td>@md.CategoryID</td>
+            <td>@md.CategoryName</td>
+        </tr>
+    }
+</table>
+@Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x, type = ViewBag.Type }))
+
+@section scripts
+{
+    <script type="text/javascript">
+        function Confirm_Form(CategoryID) {
+            var message = "您確定要刪除類別編號" + CategoryID +"嗎?";
+            if (!confirm(message))
+                return false;
+        }
+    </script>
+
+    <script src="@RouteJs.RouteJsHandler.HandlerUrl"></script>
+    <script src="~/Scripts/Export.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+}
+

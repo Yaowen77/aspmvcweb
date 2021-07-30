@@ -1,0 +1,158 @@
+﻿@model IEnumerable<WebApplication1.Models.Material.Material>
+@using PagedList.Mvc;
+@using PagedList;
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<h2>商品資料管理作業</h2>
+<br />
+
+@if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
+{
+    //@Html.Label("info", (string)ViewBag.ResultMessage, new { @class = "text-info" })
+    <script type="text/javascript">
+            var message = @Html.Raw(Json.Encode(ViewBag.ResultMessage));
+            alert(message);
+    </script>
+}
+
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm("Index", "Material", new { Type = ViewBag.Type }))
+        {
+
+            @Html.AntiForgeryToken()
+
+            <div class="table-responsive">
+                <div id="toolbar">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">商品編號</div>
+                                <input type="text" class="form-control" name="id" id="searchTexts" placeholder="請輸入商品編號">
+                                <div class="column">
+                                    <button type="submit" class="btn btn-primary queryButton"> 搜尋</button>
+                                    @Html.ActionLink("新增商品", "Create", new { type = ViewBag.Type }, new { @class = "btn btn-primary" })
+                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Material')">
+                                        匯出資料
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        }
+
+    </div>
+</div>
+
+<ul class="nav nav-pills nav-justified">
+    <li class=@ViewBag.MaterialType0>
+        @Html.ActionLink("商品主檔", "Index", "Material", new { type = 0 }, new { })
+    </li>
+    <li class=@ViewBag.MaterialType1>
+        @Html.ActionLink("門市商品", "Index", "Material", new { type = 1 }, new { })
+    </li>
+</ul>
+
+
+<table class="table">
+    <tr>
+        <th width="70">
+            操作
+        </th>
+
+        <th width="70">
+        </th>
+        @if (ViewBag.Type == 0)
+        {
+            <th width="70"></th>
+        }
+        @if (ViewBag.Type == 1)
+        {
+            <th width="80">
+                @Html.DisplayNameFor(model => model.FirstOrDefault().StoreID)
+            </th>
+        }
+        <th width="70">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Category01)
+        </th>
+        <th width="70">
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Category02)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MaterialID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().MaterialNmae)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().SalePrice)
+        </th>
+    </tr>
+    @foreach (var md in this.Model)
+    {
+<tr>
+    <td>
+        @Html.ActionLink("編輯", "Edit", new { Type = ViewBag.Type, materialID = md.MaterialID, StroeID = md.StoreID }, new { @class = "glyphicon glyphicon-pencil" })
+    </td>
+
+    <td>
+
+        @Html.ActionLink("刪除", "Delete", new { Type = ViewBag.Type, materialID = md.MaterialID , StoreID = md.StoreID}, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.MaterialID + "')" })
+    </td>
+    @if (ViewBag.Type == 0)
+    {
+        <td>
+
+            @Html.ActionLink("庫存", "_StorageDialog", new { materialID = md.MaterialID }, new { @class = "glyphicon glyphicon-list-alt", data_toggle = "modal", data_target = "#myModalDialog" })
+
+            <div class="modal fade text-center" id="myModalDialog">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                    </div>
+                </div>
+            </div>
+
+        </td>
+    }
+    @if (ViewBag.Type == 1)
+    {
+        <td>@md.StoreID</td>
+    }
+    <td>@md.Category01</td>
+    <td>@md.Category02</td>
+    <td>@md.MaterialID</td>
+    <td>@md.MaterialNmae</td>
+    <td>@md.SalePrice</td>
+</tr>
+    }
+</table>
+@Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x, type = ViewBag.Type }))
+
+@section scripts
+{
+    <script type="text/javascript">
+        function Confirm_Form(MaterialID) {
+            var message = "您確定要刪除商品編號" + MaterialID + "嗎?";
+            if (!confirm(message))
+                return false;
+        }
+    </script>
+
+    <script src="@RouteJs.RouteJsHandler.HandlerUrl"></script>
+    <script src="~/Scripts/Export.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+}
+
+
+
+
+
