@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using WebApplication1.Models.Material;
 
 namespace WebApplication1.Controllers
 {
@@ -33,14 +34,14 @@ namespace WebApplication1.Controllers
                 {
                     if (type == 0)
                     {
-                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_Material(SearchString);
-                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
+                        MaterialSearch.MaterialList = new Material().Get_Material(SearchString);
+                        var material = MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
                         return View(material);
                     }
                     else
                     {
-                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_StoreMaterial(SearchString);
-                        var storeMaterial = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
+                        MaterialSearch.MaterialList = new Material().Get_StoreMaterial(SearchString);
+                        var storeMaterial = MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
                         return View(storeMaterial);
                     }
                 }
@@ -48,14 +49,14 @@ namespace WebApplication1.Controllers
                 {
                     if (type == 0)
                     {
-                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_Material();
-                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
+                        MaterialSearch.MaterialList = new Material().Get_Material();
+                        var material = MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
                         return View(material);
                     }
                     else
                     {
-                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_StoreMaterial();
-                        var storeMaterial = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
+                        MaterialSearch.MaterialList = new Material().Get_StoreMaterial();
+                        var storeMaterial = MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
                         return View(storeMaterial);
                     }
                 }
@@ -70,7 +71,7 @@ namespace WebApplication1.Controllers
 
         public ActionResult _StorageDialog(string materialID)
         {
-            var StoreStorge = new Models.Material.StoreStorge().Get_Storage(materialID);
+            var StoreStorge = new StoreStorge().Get_Storage(materialID);
             return PartialView(StoreStorge);
         }
 
@@ -88,6 +89,7 @@ namespace WebApplication1.Controllers
 
         // POST: Material/Create
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(FormCollection collection)
         {
             try
@@ -110,6 +112,7 @@ namespace WebApplication1.Controllers
 
         // POST: Material/Edit/5
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, FormCollection collection)
         {
             try
@@ -138,7 +141,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                 var result = new Models.Material.Material().Delete_Material(type, materialID, storeId);
+                 var result = new Material().Delete_Material(type, materialID, storeId);
                  if (result)
                  {
                      TempData["ResultMessage"] = String.Format("商品[{0}]成功刪除", storeId);

@@ -29,10 +29,10 @@ namespace WebApplication1.Models.Category
 
         }
 
-        public static List<Models.Category.Category> Get_Gategory(int id)
+        public static List<Category> Get_Gategory(int id)
         {
 
-            List<Models.Category.Category> result = new List<Models.Category.Category>();
+            List<Category> result = new List<Category>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -51,7 +51,7 @@ namespace WebApplication1.Models.Category
                         {
                             while (reader.Read())
                             {
-                                result.Add(new Models.Category.Category()
+                                result.Add(new Category()
                                 {
                                     CategoryID = (string)reader["Category"],
                                     CategoryName = (reader.IsDBNull(reader.GetOrdinal("Category_Name"))) ? "" : (string)reader["Category_Name"],
@@ -118,7 +118,7 @@ namespace WebApplication1.Models.Category
 
         }
 
-        public bool Post_Category(Models.Category.Category category,int type, string InputUserID)
+        public bool Post_Category(Category category,int type, string InputUserID)
         {
             var result = false;
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
@@ -140,9 +140,9 @@ namespace WebApplication1.Models.Category
         }
 
 
-        public Models.Category.Category Get_Edit_Category(string categoryID, int type)
+        public Category Get_Edit_Category(string categoryID, int type)
         {
-            var result = new Models.Category.Category();
+            var result = new Category();
 
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
             {
@@ -162,7 +162,7 @@ namespace WebApplication1.Models.Category
 
                             while (reader.Read())
                             {
-                                result = new Models.Category.Category()
+                                result = new Category()
                                 {
                                     CategoryID = (string)reader["Category"],
                                     CategoryName = (reader.IsDBNull(reader.GetOrdinal("Category_Name"))) ? "" : (string)reader["Category_Name"]
@@ -181,7 +181,7 @@ namespace WebApplication1.Models.Category
         }
 
 
-        public bool Patch_Category(Models.Category.Category category, int type, string InputUserID)
+        public bool Patch_Category(Category category, int type, string InputUserID)
         {
             var result = false;
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
@@ -203,9 +203,9 @@ namespace WebApplication1.Models.Category
             }
         }
 
-        public static List<Models.Category.Category> Get_Category(string categoryID, int type)
+        public static List<Category> Get_Category(string categoryID, int type)
         {
-            List<Models.Category.Category> result = new List<Models.Category.Category>();
+            List<Category> result = new List<Category>();
 
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
             {
@@ -225,7 +225,7 @@ namespace WebApplication1.Models.Category
 
                             while (reader.Read())
                             {
-                                result.Add(new Models.Category.Category()
+                                result.Add(new Category()
                                 {
                                     CategoryID = (string)reader["Category"],
                                     CategoryName = (reader.IsDBNull(reader.GetOrdinal("Category_Name"))) ? "" : (string)reader["Category_Name"]

@@ -21,10 +21,11 @@ namespace WebApplication1.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [AllowAnonymous]
-        public ActionResult Index(Login postback) {
+        public async Task<ActionResult> Index(Login postback)
+        {
 
-
-            try
+            //webapi 登入寫法
+            /*try
             {
                 if (this.ModelState.IsValid)
                 {
@@ -57,18 +58,14 @@ namespace WebApplication1.Controllers
                 //ViewBag.ResultMessage = "連線失敗，請確認網路是否正常。";
                 ViewBag.ResultMessage = e.ToString();
                 return View();
-            }
-
-        }
-        /*public async Task<ActionResult> Index(Models.Login.Login postback)
-        {
+            }*/
 
             try
             {
                 if (this.ModelState.IsValid)
                 {
-                    var receivePassword = Models.Login.Login.Encoded(postback.UserPwd + postback.UserID);
-                    if (await Models.Login.Login.LoginAccountAsync(postback.UserID, receivePassword))
+                    var receivePassword = Login.Encoded(postback.UserPwd + postback.UserID);
+                    if (await Login.LoginAccountAsync(postback.UserID, receivePassword))
                     {
                         Session["UserID"] = postback.UserID;
                         return RedirectToAction("Index", "Home");
@@ -94,7 +91,7 @@ namespace WebApplication1.Controllers
 
 
 
-        }*/
+        }
 
         public ActionResult Logout()
         {

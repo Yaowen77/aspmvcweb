@@ -21,10 +21,10 @@ namespace WebApplication1.Models.Material
 
         }
 
-        public List<Models.Material.StoreStorge> Get_Storage(string materialID)
+        public List<StoreStorge> Get_Storage(string materialID)
         {
 
-            List<Models.Material.StoreStorge> result = new List<Models.Material.StoreStorge>();
+            List<StoreStorge> result = new List<StoreStorge>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -44,7 +44,7 @@ namespace WebApplication1.Models.Material
                         {
                             while (reader.Read())
                             {
-                                result.Add(new Models.Material.StoreStorge()
+                                result.Add(new StoreStorge()
                                 {
 
                                     StoreID = (reader.IsDBNull(reader.GetOrdinal("StoreID"))) ? "" : (string)reader["StoreID"],

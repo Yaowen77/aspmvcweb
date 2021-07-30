@@ -44,10 +44,10 @@ namespace WebApplication1.Models.Material
 
         }
 
-        public List<Models.Material.Material> Get_StoreMaterial()
+        public List<Material> Get_StoreMaterial()
         {
 
-            List<Models.Material.Material> result = new List<Models.Material.Material>();
+            List<Material> result = new List<Material>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -66,7 +66,7 @@ namespace WebApplication1.Models.Material
                         {
                             while (reader.Read())
                             {
-                                result.Add(new Models.Material.Material()
+                                result.Add(new Material()
                                 {
 
                                     StoreID = (reader.IsDBNull(reader.GetOrdinal("StoreID"))) ? "" : (string)reader["StoreID"],
@@ -92,10 +92,10 @@ namespace WebApplication1.Models.Material
 
 
 
-        public List<Models.Material.Material> Get_StoreMaterial(string materialId)
+        public List<Material> Get_StoreMaterial(string materialId)
         {
 
-            List<Models.Material.Material> result = new List<Models.Material.Material>();
+            List<Material> result = new List<Material>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -114,7 +114,7 @@ namespace WebApplication1.Models.Material
                         {
                             while (reader.Read())
                             {
-                                result.Add(new Models.Material.Material()
+                                result.Add(new Material()
                                 {
 
                                     StoreID = (reader.IsDBNull(reader.GetOrdinal("StoreID"))) ? "" : (string)reader["StoreID"],
@@ -142,9 +142,9 @@ namespace WebApplication1.Models.Material
 
 
 
-        public List<Models.Material.Material> Get_Material(string materialId)
+        public List<Material> Get_Material(string materialId)
         {
-            List<Models.Material.Material> result = new List<Models.Material.Material>();
+            List<Material> result = new List<Material>();
 
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
             {
@@ -165,7 +165,7 @@ namespace WebApplication1.Models.Material
 
                             while (reader.Read())
                             {
-                                result.Add(new Models.Material.Material()
+                                result.Add(new Material()
                                 {
                                     StoreID = "",
                                     Category01 = (reader.IsDBNull(reader.GetOrdinal("Category"))) ? "" : (string)reader["Category"],
@@ -191,10 +191,10 @@ namespace WebApplication1.Models.Material
 
 
 
-        public List<Models.Material.Material> Get_Material()
+        public List<Material> Get_Material()
         {
 
-            List<Models.Material.Material> result = new List<Models.Material.Material>();
+            List<Material> result = new List<Material>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -213,7 +213,7 @@ namespace WebApplication1.Models.Material
                         {
                             while (reader.Read())
                             {
-                                result.Add(new Models.Material.Material()
+                                result.Add(new Material()
                                 {
                                     StoreID =   "",
                                     Category01 = (reader.IsDBNull(reader.GetOrdinal("Category"))) ? "" : (string)reader["Category"],

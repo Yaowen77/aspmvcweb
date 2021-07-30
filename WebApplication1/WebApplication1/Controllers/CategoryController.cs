@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Infrastructure.MemberResults;
+using WebApplication1.Models.Category;
 
 namespace WebApplication1.Controllers
 {
@@ -40,16 +41,16 @@ namespace WebApplication1.Controllers
 
                  if (!String.IsNullOrEmpty(SearchString))
                 {
-                    Models.Category.CategorySearch.CategoryList = Models.Category.Category.Get_Category(SearchString, type);
-                    var category = Models.Category.CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize); ;
+                    CategorySearch.CategoryList = Category.Get_Category(SearchString, type);
+                    var category = CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize); ;
                     //IEnumerable<Models.Category.CategorySearch.CategoryList> category = Models.Category.CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize);
                     //IEnumerable< Models .Category.Category>  category  = Models.Category.CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize);
                     return View(category);
                 }
                 else
                 {
-                    Models.Category.CategorySearch.CategoryList = Models.Category.Category.Get_Gategory(type);
-                    var result = Models.Category.CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize);
+                    CategorySearch.CategoryList = Category.Get_Gategory(type);
+                    var result = CategorySearch.CategoryList.OrderBy(x => x.CategoryID).ToPagedList(page, pageSize);
                     return View(result);
                 }
             }
@@ -78,7 +79,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                var result = new Models.Category.Category().Delete_Category(type, categoryID);            
+                var result = new Category().Delete_Category(type, categoryID);            
                 if (result) 
                 {
                     TempData["ResultMessage"] = String.Format("類別[{0}]成功刪除", categoryID);
@@ -106,13 +107,14 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        public ActionResult Create(int Type , Models.Category.Category postback)
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(int Type , Category postback)
         {
             try
             {
                 if (this.ModelState.IsValid)
                 {
-                    if (!new Models.Category.Category().IsCategoryidExist(postback.CategoryID, Type))
+                    if (!new Category().IsCategoryidExist(postback.CategoryID, Type))
                     {
                         ViewBag.ResultMessage = "類別編號已存在";
                         ViewBag.Type = Type;
@@ -120,7 +122,7 @@ namespace WebApplication1.Controllers
                     }
                     else
                     {
-                        var result = new Models.Category.Category().Post_Category(postback, Type, (string)Session["UserID"]);
+                        var result = new Category().Post_Category(postback, Type, (string)Session["UserID"]);
                         if (result)
                         {
                             TempData["ResultMessage"] = String.Format("類別[{0}]成功新增", postback.CategoryID);
@@ -154,8 +156,8 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var result = new Models.Category.Category().Get_Edit_Category(categoryID, Type);
-                if (result != default(Models.Category.Category))
+                var result = new Category().Get_Edit_Category(categoryID, Type);
+                if (result != default(Category))
                 {
                     ViewBag.Type = Type;
                     return View(result);
@@ -176,14 +178,15 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        public ActionResult Edit(int Type, Models.Category.Category postback)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int Type, Category postback)
         {
             try
             {
    
                 if (this.ModelState.IsValid)
                 {
-                    var result = new Models.Category.Category().Patch_Category(postback, Type,(string)Session["UserID"]);
+                    var result = new Category().Patch_Category(postback, Type,(string)Session["UserID"]);
                     if (result)
                     {
                         TempData["ResultMessage"] = String.Format("會員[{0}]成功編輯", postback.CategoryID);
@@ -214,10 +217,11 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
-            bool result = !Models.Category.CategorySearch.CategoryList.Count.Equals(0);
+            bool result = !CategorySearch.CategoryList.Count.Equals(0);
             jo.Add("Msg", result.ToString());
             return Content(JsonConvert.SerializeObject(jo), "application/json");
         }
@@ -241,7 +245,7 @@ namespace WebApplication1.Controllers
         private JArray GetExportDataWithAllColumns()
         {
             //var query = db.Customers.OrderBy(x => x.CustomerID);
-            var query = Models.Category.CategorySearch.CategoryList.OrderBy(x => x.CategoryID);
+            var query = CategorySearch.CategoryList.OrderBy(x => x.CategoryID);
             JArray jObjects = new JArray();
 
             foreach (var item in query)

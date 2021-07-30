@@ -11,6 +11,6 @@ namespace WebApplication1.Models.Member
 
     public static class MemberSearch
     {
-        public static List<Models.Member.Member> MemberList;
+        public static List<Member> MemberList;
     }
 }

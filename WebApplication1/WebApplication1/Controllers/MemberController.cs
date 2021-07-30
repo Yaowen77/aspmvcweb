@@ -33,14 +33,14 @@ namespace WebApplication1.Controllers
             {
                 if (!String.IsNullOrEmpty(SearchString))
                 {
-                    Models.Member.MemberSearch.MemberList = Member.Get_Member(SearchString);
-                    var member = Models.Member.MemberSearch.MemberList.OrderBy(x => x.MemberID).ToPagedList(page, pageSize); 
+                    MemberSearch.MemberList = Member.Get_Member(SearchString);
+                    var member = MemberSearch.MemberList.OrderBy(x => x.MemberID).ToPagedList(page, pageSize); 
                     return View(member);
                 }
                 else
                 {
-                    Models.Member.MemberSearch.MemberList = Models.Member.Member.Get_Member();
-                    var result = Models.Member.MemberSearch.MemberList.OrderBy(x => x.MemberID).ToPagedList(page, pageSize);
+                    MemberSearch.MemberList = Member.Get_Member();
+                    var result = MemberSearch.MemberList.OrderBy(x => x.MemberID).ToPagedList(page, pageSize);
                     return View(result);
                 }
             }
@@ -57,8 +57,8 @@ namespace WebApplication1.Controllers
         {
             try
             {
-                var result = new Models.Member.Member().Get_Edit_Member(id);
-                if (result != default(Models.Member.Member))
+                var result = new Member().Get_Edit_Member(id);
+                if (result != default(Member))
                 {
                     return View(result);
                 }
@@ -77,7 +77,8 @@ namespace WebApplication1.Controllers
      
 
         [HttpPost]
-        public ActionResult Edit(Models.Member.Member postback, HttpPostedFileBase file)
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(Member postback, HttpPostedFileBase file)
         {
             try
             {
@@ -106,14 +107,14 @@ namespace WebApplication1.Controllers
 
 
                     //檔案是否為圖片
-                    if (!Models.Member.Member.IsPicture(file.FileName))
+                    if (!Member.IsPicture(file.FileName))
                     {
                         ViewBag.ResultMessage = "檔案不為圖片";
                         return View(postback);
                     }
 
                     //檔案是否為圖片
-                    if (Models.Member.Member.IsImage(file) == null)
+                    if (Member.IsImage(file) == null)
                     {
                         ViewBag.ResultMessage = "檔案不為圖片";
                         return View(postback);
@@ -122,7 +123,7 @@ namespace WebApplication1.Controllers
 
                 if (this.ModelState.IsValid)
                 {
-                    var result = new Models.Member.Member().Patch_Member(postback, file, FileBytes, (string)Session["UserID"]);
+                    var result = new Member().Patch_Member(postback, file, FileBytes, (string)Session["UserID"]);
                     if (result)
                     {
                         TempData["ResultMessage"] = String.Format("會員[{0}]成功編輯", postback.MemberID);
@@ -154,7 +155,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                var result = new Models.Member.Member().Delete_Member(id);
+                var result = new Member().Delete_Member(id);
                 if (result) //判斷此id是否有資料
                 {
                     TempData["ResultMessage"] = String.Format("會員[{0}]成功刪除", id);
@@ -180,10 +181,11 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
-            bool result = !Models.Member.MemberSearch.MemberList.Count.Equals(0);
+            bool result = !MemberSearch.MemberList.Count.Equals(0);
             jo.Add("Msg", result.ToString());
             return Content(JsonConvert.SerializeObject(jo), "application/json");
         }
@@ -207,7 +209,7 @@ namespace WebApplication1.Controllers
         private JArray GetExportDataWithAllColumns()
         {
             //var query = db.Customers.OrderBy(x => x.CustomerID);
-            var query = Models.Member.MemberSearch.MemberList.OrderBy(x => x.MemberID);
+            var query = MemberSearch.MemberList.OrderBy(x => x.MemberID);
             JArray jObjects = new JArray();
 
             foreach (var item in query)
@@ -225,8 +227,9 @@ namespace WebApplication1.Controllers
         }
 
 
-        [HttpPost] 
-        public ActionResult Create(Models.Member.Member postback, HttpPostedFileBase file)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(Member postback, HttpPostedFileBase file)
         {
 
             try
@@ -258,14 +261,14 @@ namespace WebApplication1.Controllers
 
 
                     //檔案是否為圖片
-                    if (!Models.Member.Member.IsPicture(file.FileName))
+                    if (!Member.IsPicture(file.FileName))
                     {
                         ViewBag.ResultMessage = "檔案不為圖片";
                         return View(postback);
                     }
 
                     //檔案是否為圖片
-                    if (Models.Member.Member.IsImage(file) == null)
+                    if (Member.IsImage(file) == null)
                     {
                         ViewBag.ResultMessage = "檔案不為圖片";
                         return View(postback);
@@ -275,14 +278,14 @@ namespace WebApplication1.Controllers
 
                 if (this.ModelState.IsValid)
                 {
-                    if (!new Models.Member.Member().IsMemberidExist(postback.MemberID))
+                    if (!new Member().IsMemberidExist(postback.MemberID))
                     {
                         ViewBag.ResultMessage = "會員編號已存在";
                         return View(postback);
                     }
                     else
                     {
-                        var result = new Models.Member.Member().Post_Member(postback, file, FileBytes, (string)Session["UserID"]);
+                        var result = new Member().Post_Member(postback, file, FileBytes, (string)Session["UserID"]);
                         if (result)
                         {
                             TempData["ResultMessage"] = String.Format("會員[{0}]成功新增", postback.MemberID);

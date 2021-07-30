@@ -43,10 +43,10 @@ namespace WebApplication1.Models.Member
             
         }
 
-        public static List<Models.Member.Member>  Get_Member()
+        public static List<Member>  Get_Member()
         {
 
-            List<Models.Member.Member> result = new List<Models.Member.Member>();
+            List<Member> result = new List<Member>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -64,7 +64,7 @@ namespace WebApplication1.Models.Member
                         {                           
                             while (reader.Read())
                             {
-                                result.Add(new Models.Member.Member()
+                                result.Add(new Member()
                                 {
                                     MemberID = (string)reader["MemberID"],
                                     MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
@@ -83,9 +83,9 @@ namespace WebApplication1.Models.Member
             }
         }
 
-        public static List<Models.Member.Member> Get_Member(string id)
+        public static List<Member> Get_Member(string id)
         {
-            List<Models.Member.Member> result = new List<Models.Member.Member>();
+            List<Member> result = new List<Member>();
 
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
             {
@@ -104,7 +104,7 @@ namespace WebApplication1.Models.Member
 
                             while (reader.Read())
                             {
-                                result.Add(new Models.Member.Member()
+                                result.Add(new Member()
                                 {
                                     MemberID = (string)reader["MemberID"],
                                     MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
@@ -125,9 +125,9 @@ namespace WebApplication1.Models.Member
 
 
 
-        public  Models.Member.Member Get_Edit_Member(string id)
+        public Member Get_Edit_Member(string id)
         {
-            var result = new Models.Member.Member();
+            var result = new Member();
 
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
             {
@@ -166,7 +166,7 @@ namespace WebApplication1.Models.Member
                                 else
                                 {
 
-                                    result = new Models.Member.Member()
+                                    result = new Member()
                                     {
                                         MemberID = (string)reader["MemberID"],
                                         MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
@@ -191,7 +191,7 @@ namespace WebApplication1.Models.Member
             }
         }
         
-        public bool Patch_Member(Models.Member.Member member, HttpPostedFileBase file, byte[] FileBytes, string InputUserID)
+        public bool Patch_Member(Member member, HttpPostedFileBase file, byte[] FileBytes, string InputUserID)
         {
             var result = false;
             using (var conn = new MySqlConnection(GlobalFunction.GlobalConnString))
@@ -242,7 +242,7 @@ namespace WebApplication1.Models.Member
             }
         }
 
-        public bool Post_Member(Models.Member.Member member, HttpPostedFileBase file, byte[] FileBytes,string InputUserID)
+        public bool Post_Member(Member member, HttpPostedFileBase file, byte[] FileBytes,string InputUserID)
         {
             var result = false;
             string storeId = Get_StoreID();

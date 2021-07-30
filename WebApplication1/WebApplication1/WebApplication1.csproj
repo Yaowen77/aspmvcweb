@@ -206,7 +206,7 @@
     <Compile Include="Models\Category\Category.cs" />
     <Compile Include="Models\Category\CategoryList.cs" />
     <Compile Include="Models\GlobalFunction.cs" />
-    <Compile Include="Models\Login\apis.cs" />
+    <Compile Include="Models\apis.cs" />
     <Compile Include="Models\Login\Login.cs" />
     <Compile Include="Models\Login\Result.cs" />
     <Compile Include="Models\Material\Material.cs" />
