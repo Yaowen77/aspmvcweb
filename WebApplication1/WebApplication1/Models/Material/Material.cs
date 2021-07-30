@@ -76,6 +76,7 @@ namespace WebApplication1.Models.Material
                                     MaterialNmae = (reader.IsDBNull(reader.GetOrdinal("MaterialName"))) ? "" : (string)reader["MaterialName"],
                                     SalePrice = (reader.IsDBNull(reader.GetOrdinal("SalePrice"))) ? 0 : (decimal)reader["SalePrice"]
 
+
                                 });
                             }
                             return result;
