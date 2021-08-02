@@ -69,9 +69,9 @@ namespace WebApplication1.Controllers
             }
         }
 
-        public ActionResult _StorageDialog(string materialID)
+        public ActionResult _StorageDialog(string materialId)
         {
-            var StoreStorge = new StoreStorge().Get_Storage(materialID);
+            var StoreStorge = new StoreStorge().Get_Storage(materialId);
             return PartialView(StoreStorge);
         }
 
