@@ -37,7 +37,8 @@
                                 <div class="column">
                                     <button type="submit" class="btn btn-primary queryButton"> 搜尋</button>
                                     @Html.ActionLink("新增會員", "Create", new { }, new { @class = "btn btn-primary" })
-                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Member')" >
+                                    @Html.ActionLink("報表", "Report", new { }, new { @class = "btn btn-primary" })
+                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Member')">
                                         匯出資料
                                     </button>
                                 </div>

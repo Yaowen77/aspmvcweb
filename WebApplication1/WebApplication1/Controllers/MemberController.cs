@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Infrastructure.MemberResults;
 using WebApplication1.Models.Member;
+using Microsoft.Reporting.WebForms;
+using MySql.Data.MySqlClient;
 
 namespace WebApplication1.Controllers
 {
@@ -173,6 +175,23 @@ namespace WebApplication1.Controllers
                 return View();
             }
 
+        }
+
+
+        public ActionResult Report()
+        {
+            ReportViewer reportViewer = new ReportViewer();
+            reportViewer.ProcessingMode = ProcessingMode.Local;
+            reportViewer.ShowPrintButton = true; //顯示列印鈕
+            reportViewer.LocalReport.EnableExternalImages = true;
+            reportViewer.LocalReport.ReportPath = $"{Request.MapPath(Request.ApplicationPath)}Report\\Report1.rdlc";
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", MemberSearch.MemberList));
+            reportViewer.LocalReport.Refresh();
+            reportViewer.AsyncRendering = false;
+            reportViewer.SizeToReportContent = true;
+            reportViewer.ZoomMode = ZoomMode.FullPage;
+            ViewBag.ReportViewer = reportViewer;
+            return View();
         }
 
         public ActionResult Create()
