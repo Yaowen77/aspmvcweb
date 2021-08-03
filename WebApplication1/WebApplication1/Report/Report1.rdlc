@@ -17,7 +17,7 @@
           </TablixColumns>
           <TablixRows>
             <TablixRow>
-              <Height>2.43885cm</Height>
+              <Height>0.58677cm</Height>
               <TablixCells>
                 <TablixCell>
                   <CellContents>
@@ -133,7 +133,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!MemberID.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>新細明體</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -163,7 +166,10 @@
                           <TextRuns>
                             <TextRun>
                               <Value>=Fields!MemberName.Value</Value>
-                              <Style />
+                              <Style>
+                                <FontFamily>新細明體</FontFamily>
+                                <FontSize>12pt</FontSize>
+                              </Style>
                             </TextRun>
                           </TextRuns>
                           <Style />
@@ -237,7 +243,7 @@
         <DataSetName>DataSet1</DataSetName>
         <Top>1.08162cm</Top>
         <Left>1.08162cm</Left>
-        <Height>4.87771cm</Height>
+        <Height>3.02562cm</Height>
         <Width>29.4075cm</Width>
         <Style>
           <Border>
