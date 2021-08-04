@@ -22,9 +22,8 @@ namespace WebApplication1.Models.Login
         /// <returns>API回傳訊息</returns>
         public static T CallAPI <T,T1>(T1 t1, string strParaUri)
         {
-
             //Login
-             T RetuenValue = default(T);
+            T RetuenValue = default(T);
            // Result RetuenValue = new Result();
             try
             {
