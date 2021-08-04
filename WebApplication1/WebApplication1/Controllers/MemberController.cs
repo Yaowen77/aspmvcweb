@@ -180,16 +180,20 @@ namespace WebApplication1.Controllers
 
         public ActionResult Report()
         {
-            ReportViewer reportViewer = new ReportViewer();
-            reportViewer.ProcessingMode = ProcessingMode.Local;
-            reportViewer.ShowPrintButton = true; //顯示列印鈕
+            ReportViewer reportViewer = new ReportViewer
+            {
+                ProcessingMode = ProcessingMode.Local,
+                AsyncRendering = false,
+                SizeToReportContent = true,
+                ZoomMode = ZoomMode.FullPage,
+                ShowPrintButton = true //顯示列印鈕
+                
+            };
             reportViewer.LocalReport.EnableExternalImages = true;
             reportViewer.LocalReport.ReportPath = $"{Request.MapPath(Request.ApplicationPath)}Report\\Report1.rdlc";
             reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", MemberSearch.MemberList));
             reportViewer.LocalReport.Refresh();
-            reportViewer.AsyncRendering = false;
-            reportViewer.SizeToReportContent = true;
-            reportViewer.ZoomMode = ZoomMode.FullPage;
+
             ViewBag.ReportViewer = reportViewer;
             return View();
         }
