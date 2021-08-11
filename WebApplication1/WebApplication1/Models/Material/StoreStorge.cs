@@ -21,10 +21,10 @@ namespace WebApplication1.Models.Material
 
         }
 
-        public List<StoreStorge> Get_Storage(string materialID)
+        public List<Models.Material.StoreStorge> Get_Storage(string materialID)
         {
 
-            List<StoreStorge> result = new List<StoreStorge>();
+            List<Models.Material.StoreStorge> result = new List<Models.Material.StoreStorge>();
             string connectionString = GlobalFunction.GlobalConnString;
 
             using (var conn = new MySqlConnection(connectionString))
@@ -34,7 +34,7 @@ namespace WebApplication1.Models.Material
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "SELECT StoreID,  Storage FROM StoreMaterial WHERE MaterialID = @MaterialID";
+                    command.CommandText = "SELECT StoreID,  Storage FROM StoreMaterial WHERE MaterialID = @MaterialID And AFlag = 0";
                     command.Parameters.AddWithValue("@MaterialID", materialID);
 
 
@@ -44,7 +44,7 @@ namespace WebApplication1.Models.Material
                         {
                             while (reader.Read())
                             {
-                                result.Add(new StoreStorge()
+                                result.Add(new Models.Material.StoreStorge()
                                 {
 
                                     StoreID = (reader.IsDBNull(reader.GetOrdinal("StoreID"))) ? "" : (string)reader["StoreID"],

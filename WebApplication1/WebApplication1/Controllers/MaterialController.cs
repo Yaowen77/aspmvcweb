@@ -1,10 +1,13 @@
-﻿using PagedList;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using PagedList;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using WebApplication1.Models.Material;
+using WebApplication1.Infrastructure.MemberResults;
 
 namespace WebApplication1.Controllers
 {
@@ -32,16 +35,18 @@ namespace WebApplication1.Controllers
 
                 if (!String.IsNullOrEmpty(SearchString))
                 {
+                    page = 1;
+                    pageSize = 15;
                     if (type == 0)
                     {
-                        MaterialSearch.MaterialList = new Material().Get_Material(SearchString);
-                        var material = MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
+                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_Material(SearchString);
+                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
                         return View(material);
                     }
                     else
                     {
-                        MaterialSearch.MaterialList = new Material().Get_StoreMaterial(SearchString);
-                        var storeMaterial = MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
+                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_StoreMaterial(SearchString);
+                        var storeMaterial = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
                         return View(storeMaterial);
                     }
                 }
@@ -49,14 +54,14 @@ namespace WebApplication1.Controllers
                 {
                     if (type == 0)
                     {
-                        MaterialSearch.MaterialList = new Material().Get_Material();
-                        var material = MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
+                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_Material();
+                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
                         return View(material);
                     }
                     else
                     {
-                        MaterialSearch.MaterialList = new Material().Get_StoreMaterial();
-                        var storeMaterial = MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
+                        Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_StoreMaterial();
+                        var storeMaterial = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID).ToPagedList(page, pageSize);
                         return View(storeMaterial);
                     }
                 }
@@ -69,60 +74,156 @@ namespace WebApplication1.Controllers
             }
         }
 
-        public ActionResult _StorageDialog(string materialId)
+        public ActionResult _StorageDialog(string materialID)
         {
-            var StoreStorge = new StoreStorge().Get_Storage(materialId);
+            var StoreStorge = new Models.Material.StoreStorge().Get_Storage(materialID);
             return PartialView(StoreStorge);
         }
 
-        // GET: Material/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        // GET: Material/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: Material/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(FormCollection collection)
+        public ActionResult Create(int Type, Models.Material.Material postback)
         {
             try
             {
-                // TODO: Add insert logic here
+                if (this.ModelState.IsValid)
+                {
+                    if (!new Models.Material.Material().IsMaterialIdExist(postback, Type))
+                    {
+                        ViewBag.ResultMessage = "商品編號已存在";
+                        ViewBag.Type = Type;
+                        return View(postback);
+                    }
+                    else
+                    {
+                        var result = new Models.Material.Material().Post_Material(postback, Type, (string)Session["UserID"]);
+                        if (result)
+                        {
+                            TempData["ResultMessage"] = String.Format("商品[{0}]成功新增", postback.MaterialID);
+                            return RedirectToAction("Index", "Material", new { type = Type });
+                        }
+                        else
+                        {
+                            ViewBag.ResultMessage = "資料有誤，請檢查";
+                            ViewBag.Type = Type;
+                            return View(postback);
+                        }
+                    }
 
-                return RedirectToAction("Index");
+                }
+                else
+                {
+                    ViewBag.ResultMessage = "資料有誤，請檢查";
+                    ViewBag.Type = Type;
+                    return View(postback);
+                }
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.ResultMessage = e.ToString();
                 return View();
             }
         }
 
-        // GET: Material/Edit/5
-        public ActionResult Edit(int id)
+
+        public ActionResult Create(int type)
         {
+            ViewBag.Type = type;
+            var categoryId = new Models.Material.Material().Get_Categpoy();
+            ViewBag.CategoryList = categoryId;
+            var categoryId2 = new Models.Material.Material().Get_Categpoy2();
+            ViewBag.CategoryList2 = categoryId2;
+            var supplierId = new Models.Material.Material().Get_Supplier();
+            ViewBag.SupplierList = supplierId;
             return View();
         }
 
-        // POST: Material/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, FormCollection collection)
+        public ActionResult Edit(int Type, string materialId,string storeId)
         {
             try
             {
-                // TODO: Add update logic here
+                var categoryId = new Models.Material.Material().Get_Categpoy();
+                ViewBag.CategoryList = categoryId;     
+                var categoryId2 = new Models.Material.Material().Get_Categpoy2();
+                ViewBag.CategoryList2 = categoryId2;
 
-                return RedirectToAction("Index");
+                var supplierId = new Models.Material.Material().Get_Supplier();
+                ViewBag.SupplierList = supplierId;
+
+                if (Type == 0)
+                {
+                    var material = new Models.Material.Material().Get_Edit_Material(materialId);
+                    if (material != default(Models.Material.Material))
+                    {
+                        ViewBag.Type = Type;
+                        return View(material);
+                    }
+                    else
+                    {   //如果沒有資料則顯示錯誤訊息並導回Index頁面
+                        TempData["resultMessage"] = "資料有誤，請重新操作";
+                        return RedirectToAction("Index", "Material", new { type = Type });
+                    }
+                }
+                else
+                {
+                 
+                    var storeMaterial = new Models.Material.Material().Get_Edit_StoreMaterial(materialId, storeId);
+                    if (storeMaterial != default(Models.Material.Material))
+                    {
+                        ViewBag.Type = Type;
+                        return View(storeMaterial);
+                    }
+                    else
+                    {   //如果沒有資料則顯示錯誤訊息並導回Index頁面
+                        TempData["resultMessage"] = "資料有誤，請重新操作";
+                        return RedirectToAction("Index", "Material", new { type = Type });
+                    }
+
+                }
             }
-            catch
+            catch (Exception e)
             {
+                ViewBag.ResultMessage = e.ToString();
+                ViewBag.Type = Type;
+                return View();
+            }
+        }
+
+     
+        [HttpPost,ActionName("Edit")]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditMaterial(int Type, Models.Material.Material postback)
+        {
+            try
+            {
+
+                if (this.ModelState.IsValid)
+                {
+                    var result = new Models.Material.Material().Patch_Material(postback, Type, (string)Session["UserID"]);
+                    if (result)
+                    {
+                        TempData["ResultMessage"] = String.Format("商品[{0}]成功編輯", postback.MaterialID);
+                        return RedirectToAction("Index", "Material", new { type = Type });
+                    }
+                    else
+                    {
+                        ViewBag.ResultMessage = "資料有誤，請檢查";
+                        ViewBag.Type = Type;
+                        return View(postback);
+                    }
+
+                }
+                else
+                {
+                    ViewBag.ResultMessage = "資料有誤，請檢查";
+                    ViewBag.Type = Type;
+                    return View(postback);
+                }
+            }
+            catch (Exception e)
+            {
+                ViewBag.ResultMessage = e.ToString();
+                ViewBag.Type = Type;
                 return View();
             }
         }
@@ -141,7 +242,7 @@ namespace WebApplication1.Controllers
 
             try
             {
-                 var result = new Material().Delete_Material(type, materialID, storeId);
+                 var result = new Models.Material.Material().Delete_Material(type, materialID, storeId);
                  if (result)
                  {
                      TempData["ResultMessage"] = String.Format("商品[{0}]成功刪除", storeId);
@@ -159,6 +260,56 @@ namespace WebApplication1.Controllers
                 return View();
             }
 
-        }   
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult HasData()
+        {
+            JObject jo = new JObject();
+            bool result = !Models.Material.MaterialSearch.MaterialList.Count.Equals(0);
+            jo.Add("Msg", result.ToString());
+            return Content(JsonConvert.SerializeObject(jo), "application/json");
+        }
+
+        public ActionResult Export()
+        {
+            var exportSpource = this.GetExportDataWithAllColumns();
+            var dt = JsonConvert.DeserializeObject<DataTable>(exportSpource.ToString());
+
+            var exportFileName =
+                string.Concat("MaterialData_", DateTime.Now.ToString("yyyyMMddHHmmss"), ".xlsx");
+
+            return new ExportExcelResult
+            {
+                SheetName = "商品資料",
+                FileName = exportFileName,
+                ExportData = dt
+            };
+        }
+
+        private JArray GetExportDataWithAllColumns()
+        {
+            //var query = db.Customers.OrderBy(x => x.CustomerID);
+            var query = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.StoreID).ThenBy(n => n.MaterialID);
+            JArray jObjects = new JArray();
+
+            foreach (var item in query)
+            {
+                var jo = new JObject
+                {
+                    {"Category01", item.Category01},
+                    {"Category02", item.Category02},
+                    {"SupplierID1", item.SupplierID1},
+                    {"StoreID", item.StoreID},
+                    {"MaterialID", item.MaterialID},
+                    {"MaterialNmae", item.MaterialNmae},
+                    {"SalePrice", item.SalePrice},
+                };
+                jObjects.Add(jo);
+            }
+            return jObjects;
+        }
+
     }
 }

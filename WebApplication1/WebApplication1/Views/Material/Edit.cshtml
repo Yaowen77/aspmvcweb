@@ -1,0 +1,136 @@
+﻿@model WebApplication1.Models.Material.Material
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+@if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
+{
+    //@Html.Label("info", (string)ViewBag.ResultMessage, new { @class = "text-info" })
+    <script type="text/javascript">
+            var message = @Html.Raw(Json.Encode(ViewBag.ResultMessage));
+            alert(message);
+    </script>
+}
+
+
+@using (Html.BeginForm("Edit", "Material", new { Type = ViewBag.Type }, FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <br> </br>
+    @if (ViewBag.Type == 0)
+    {
+        <h2>商品主檔資料修改作業</h2>
+    }
+    else
+    {
+        <h2>門市商品資料修改作業</h2>
+    }
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+    @if (ViewBag.Type == 1)
+    {
+        <div class="form-group">
+            @Html.LabelFor(model => model.StoreID, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.StoreID, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+                @Html.ValidationMessageFor(model => model.StoreID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    }
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MaterialID, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.MaterialID, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+            @Html.ValidationMessageFor(model => model.MaterialID, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Category01, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @if (ViewBag.Type == 0)
+            {
+                @Html.DropDownListFor(model => model.Category01, new SelectList(ViewBag.CategoryList, "categoryId", "categoryName"), htmlAttributes: new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Category01, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+            }
+            @Html.ValidationMessageFor(model => model.Category01, "", new { @class = "text-danger" })
+
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Category02, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @if (ViewBag.Type == 0)
+            {
+                @Html.DropDownListFor(model => model.Category02, new SelectList(ViewBag.CategoryList2, "categoryId", "categoryName"), htmlAttributes: new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.Category02, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+            }
+            @Html.ValidationMessageFor(model => model.Category02, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SupplierID1, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @if (ViewBag.Type == 0)
+            {
+                @Html.DropDownListFor(model => model.SupplierID1, new SelectList(ViewBag.SupplierList, "SupplierID", "FullName"), htmlAttributes: new { @class = "form-control" })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.SupplierID1, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+            }
+            @Html.ValidationMessageFor(model => model.SupplierID1, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.MaterialNmae, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @if (ViewBag.Type == 0)
+            {
+                @Html.EditorFor(model => model.MaterialNmae, new { htmlAttributes = new { @class = "form-control" } })
+            }
+            else
+            {
+                @Html.EditorFor(model => model.MaterialNmae, new { htmlAttributes = new { @class = "form-control", disabled = "disabled", @readonly = "readonly" } })
+            }
+            @Html.ValidationMessageFor(model => model.MaterialNmae, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.SalePrice, htmlAttributes: new { @class = "control-label col-md-1" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.SalePrice, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.SalePrice, "", new { @class = "text-danger" })
+        </div>
+    </div>
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" value="存檔" class="btn btn-default" />
+        </div>
+    </div>
+</div>
+}
+
+<div>
+    @Html.ActionLink("返回清單", "Index", new { type = ViewBag.Type })
+</div>

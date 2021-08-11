@@ -226,6 +226,7 @@
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\MaterialController.cs" />
     <Compile Include="Controllers\MemberController.cs" />
+    <Compile Include="Controllers\SupplierController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -236,12 +237,16 @@
     <Compile Include="Models\apis.cs" />
     <Compile Include="Models\Login\Login.cs" />
     <Compile Include="Models\Login\Result.cs" />
+    <Compile Include="Models\Material\Category.cs" />
     <Compile Include="Models\Material\Material.cs" />
     <Compile Include="Models\Material\MaterialList.cs" />
     <Compile Include="Models\Material\StoreStorge.cs" />
+    <Compile Include="Models\Material\Supplier.cs" />
     <Compile Include="Models\Member\Member.cs" />
     <Compile Include="Models\Member\MemberList.cs" />
     <Compile Include="Models\Member\MemberValidateDateRangeAttribute.cs" />
+    <Compile Include="Models\Supplier\Supplier.cs" />
+    <Compile Include="Models\Supplier\SupplierList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -332,6 +337,12 @@
     <Content Include="Views\Material\Index.cshtml" />
     <Content Include="Views\Material\_StorageDialog.cshtml" />
     <Content Include="Views\Member\Report.cshtml" />
+    <Content Include="Views\Material\Edit.cshtml" />
+    <Content Include="Views\Material\Create.cshtml" />
+    <Content Include="Views\Supplier\Create.cshtml" />
+    <Content Include="Views\Supplier\Delete.cshtml" />
+    <Content Include="Views\Supplier\Edit.cshtml" />
+    <Content Include="Views\Supplier\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

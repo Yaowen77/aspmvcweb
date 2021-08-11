@@ -12,6 +12,6 @@ namespace WebApplication1.Models.Material
 
     public static class MaterialSearch
     {
-        public static List<Material> MaterialList;
+        public static List<Models.Material.Material> MaterialList;
     }
 }

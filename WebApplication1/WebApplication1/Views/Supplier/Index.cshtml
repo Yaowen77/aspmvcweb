@@ -1,0 +1,104 @@
+﻿
+@model IEnumerable<WebApplication1.Models.Supplier.Supplier>
+@using PagedList.Mvc;
+@using PagedList;
+
+
+@{
+    Layout = "~/Views/Shared/_Layout2.cshtml";
+}
+
+
+<h1>廠商資料管理作業</h1>
+<br />
+
+@if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
+{
+    <script type="text/javascript">
+            var message = @Html.Raw(Json.Encode(ViewBag.ResultMessage));
+            alert(message);
+    </script>
+}
+<div class="container">
+    <div class="row">
+        @using (Html.BeginForm())
+        {
+            @Html.AntiForgeryToken()
+
+            <div class="table-responsive">
+                <div id="toolbar">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <div class="input-group-addon">廠商編號</div>
+                                <input type="text" class="form-control" name="id" id="searchTexts" placeholder="請輸入廠商編號">
+                                <div class="column">
+                                    <button type="submit" class="btn btn-primary queryButton"> 搜尋</button>
+                                    @Html.ActionLink("新增廠商", "Create", new { }, new { @class = "btn btn-primary" })
+                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Supplier')">
+                                        匯出資料
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        }
+    </div>
+</div>
+
+
+
+<table class="table">
+    <tr>
+        <th width="70">
+            操作
+        </th>
+        <th width="70">
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().SupplierID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FullName)
+        </th>
+        <th>
+
+        </th>
+    </tr>
+
+    @foreach (var md in this.Model)
+    {
+<tr>
+    <td>
+        @Html.ActionLink("編輯", "Edit", new { id = md.SupplierID }, new { @class = "glyphicon glyphicon-pencil" })
+    </td>
+    <td>
+        @Html.ActionLink("刪除", "Delete", new { id = md.SupplierID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.SupplierID + "')" })
+    </td>
+    <td>@md.SupplierID</td>
+    <td>@md.FullName</td>
+    <td></td>
+</tr>
+    }
+</table>
+@Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x }))
+
+@section scripts
+{
+    <script type="text/javascript">
+        function Confirm_Form(SupplierID) {
+            var message = "您確定要刪除廠商編號" + SupplierID + "嗎?";
+            if (!confirm(message))
+                return false;
+        }
+    </script>
+
+    <script src="@RouteJs.RouteJsHandler.HandlerUrl"></script>
+    <script src="~/Scripts/Export.js"></script>
+    <script src="~/Scripts/bootbox.min.js"></script>
+}
+
