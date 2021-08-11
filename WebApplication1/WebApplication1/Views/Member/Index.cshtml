@@ -76,25 +76,40 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().EMail)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Birthday)
+        </th>
+        <th>
 
         </th>
     </tr>
 
     @foreach (var md in this.Model)
     {
-        <tr>
-            <td>
-                @Html.ActionLink("編輯", "Edit", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-pencil" })
-            </td>
-            <td>
-                @Html.ActionLink("刪除", "Delete", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.MemberID + "')" })
-            </td>
-            <td>@md.MemberID</td>
-            <td>@md.MemberName</td>
-            <td>@md.MobilPhone</td>
-            <td>@md.EMail</td>
-        </tr>
+<tr>
+    <td>
+        @Html.ActionLink("編輯", "Edit", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-pencil" })
+    </td>
+    <td>
+        @Html.ActionLink("刪除", "Delete", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.MemberID + "')" })
+    </td>
+    <td>@md.MemberID</td>
+    <td>@md.MemberName</td>
+    <td>@md.MobilPhone</td>
+    <td>@md.EMail</td>
+    @{
+        if (@md.Birthday != null)
+        {
+        <td>@md.Birthday.Value.ToString("yyyy-MM-dd")</td>
+
+        }
+        else
+        {
+            <td>@md.Birthday</td>
+
+        }
     }
+</tr>
+        }
 </table>
 @Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x }))
 

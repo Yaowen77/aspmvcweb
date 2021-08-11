@@ -241,6 +241,7 @@
     <Compile Include="Models\Material\StoreStorge.cs" />
     <Compile Include="Models\Member\Member.cs" />
     <Compile Include="Models\Member\MemberList.cs" />
+    <Compile Include="Models\Member\MemberValidateDateRangeAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Report\DataSet1.Designer.cs">
       <AutoGen>True</AutoGen>

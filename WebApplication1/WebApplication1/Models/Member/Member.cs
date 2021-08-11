@@ -7,7 +7,9 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
+using WebApplication1.Models.Member.Validation;
 using static WebApplication1.Controllers.MemberController;
+
 
 namespace WebApplication1.Models.Member
 {
@@ -22,7 +24,7 @@ namespace WebApplication1.Models.Member
         [StringLength(40, ErrorMessage = "{0}的長度至少必須為{2}的字元。", MinimumLength = 1)]
         public string MemberName { get; set; }
         [Display(Name = "會員手機")]
-        [DataType(DataType.PhoneNumber)]
+        [RegularExpression(@"^(09)([0-9]{8})$")]
         [StringLength(20, ErrorMessage = "{0}的長度至少必須為{2}的字元。", MinimumLength = 1)]
         public string MobilPhone { get; set; }
 
@@ -30,6 +32,13 @@ namespace WebApplication1.Models.Member
         [DataType(DataType.EmailAddress)]
         [StringLength(50, ErrorMessage = "{0}的長度至少必須為{2}的字元。", MinimumLength = 1)]
         public string EMail { get; set; }
+
+        [Display(Name = "生日")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        //[MyValidateDateRange(MyStartDate = "1/1/1950", MyEndDate = "1/1/2025", ErrorMessage = "日期區間，只能在1950年以後~2025年之前")]
+        [MemberValidateDateRangeAttribute(MyStartDate = "1/1/1950", MyEndDate = "1/1/2025", ErrorMessage = "日期區間，只能在1950年以後~2025年之前")]
+        public DateTime? Birthday { get; set; }
 
 
         [Display(Name = "會員圖片")]
@@ -56,7 +65,7 @@ namespace WebApplication1.Models.Member
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail  FROM Member";
+                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail,Birthday  FROM Member";
 
                     using (var reader = command.ExecuteReader())
                     {
@@ -70,6 +79,7 @@ namespace WebApplication1.Models.Member
                                     MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
                                     MobilPhone = (reader.IsDBNull(reader.GetOrdinal("MobilPhone"))) ? "" : (string)reader["MobilPhone"],
                                     EMail = (reader.IsDBNull(reader.GetOrdinal("EMail"))) ? "" : (string)reader["EMail"],
+                                    Birthday = (reader.IsDBNull(reader.GetOrdinal("Birthday"))) ? (DateTime?)null : (DateTime)reader["Birthday"],
                                 });
                             }
                             return result;
@@ -94,7 +104,7 @@ namespace WebApplication1.Models.Member
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail  FROM Member WHERE MemberID = @ID";
+                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail,Birthday  FROM Member WHERE MemberID = @ID";
                     command.Parameters.AddWithValue("@ID", id);
 
                     using (var reader = command.ExecuteReader())
@@ -110,6 +120,7 @@ namespace WebApplication1.Models.Member
                                     MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
                                     MobilPhone = (reader.IsDBNull(reader.GetOrdinal("MobilPhone"))) ? "" : (string)reader["MobilPhone"],
                                     EMail = (reader.IsDBNull(reader.GetOrdinal("EMail"))) ? "" : (string)reader["EMail"],
+                                    Birthday = (reader.IsDBNull(reader.GetOrdinal("Birthday"))) ? (DateTime?)null : (DateTime)reader["Birthday"],
                                 });
                             }
                             return result;
@@ -136,7 +147,7 @@ namespace WebApplication1.Models.Member
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail,ImageName,ImageData  FROM Member WHERE MemberID = @ID";
+                    command.CommandText = "SELECT MemberID,MemberName,MobilPhone,EMail,Birthday,ImageName,ImageData  FROM Member WHERE MemberID = @ID";
                     command.Parameters.AddWithValue("@ID", id);
 
                     using (var reader = command.ExecuteReader())
@@ -158,6 +169,7 @@ namespace WebApplication1.Models.Member
                                         MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
                                         MobilPhone = (reader.IsDBNull(reader.GetOrdinal("MobilPhone"))) ? "" : (string)reader["MobilPhone"],
                                         EMail = (reader.IsDBNull(reader.GetOrdinal("EMail"))) ? "" : (string)reader["EMail"],
+                                        Birthday = (reader.IsDBNull(reader.GetOrdinal("Birthday"))) ? (DateTime?)null : (DateTime)reader["Birthday"],
                                         ImageName = (reader.IsDBNull(reader.GetOrdinal("ImageName"))) ? "" : (string)reader["ImageName"],
                                         MemberImage = buffer
 
@@ -172,6 +184,7 @@ namespace WebApplication1.Models.Member
                                         MemberName = (reader.IsDBNull(reader.GetOrdinal("MemberName"))) ? "" : (string)reader["MemberName"],
                                         MobilPhone = (reader.IsDBNull(reader.GetOrdinal("MobilPhone"))) ? "" : (string)reader["MobilPhone"],
                                         EMail = (reader.IsDBNull(reader.GetOrdinal("EMail"))) ? "" : (string)reader["EMail"],
+                                        Birthday = (reader.IsDBNull(reader.GetOrdinal("Birthday"))) ? (DateTime?)null : (DateTime)reader["Birthday"],
                                         ImageName = (reader.IsDBNull(reader.GetOrdinal("ImageName"))) ? "" : (string)reader["ImageName"]
                                     };
                                 }
@@ -200,11 +213,12 @@ namespace WebApplication1.Models.Member
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "Update Member Set MemberName = @MemberName , MobilPhone = @MobilPhone ,EMail = @EMail,ModifyEID =@ModifyEID,ModifyDate = Now() Where MemberID = @MemberID";
+                    command.CommandText = "Update Member Set MemberName = @MemberName , MobilPhone = @MobilPhone ,EMail = @EMail,Birthday = @Birthday,ModifyEID =@ModifyEID,ModifyDate = Now() Where MemberID = @MemberID";
                     command.Parameters.AddWithValue("@MemberID", member.MemberID);
                     command.Parameters.AddWithValue("@MemberName", member.MemberName);
                     command.Parameters.AddWithValue("@MobilPhone", member.MobilPhone);
                     command.Parameters.AddWithValue("@EMail", member.EMail);
+                    command.Parameters.AddWithValue("@Birthday", member.Birthday);
                     command.Parameters.AddWithValue("@ModifyEID", InputUserID);
                     command.ExecuteNonQuery();
 
@@ -252,13 +266,14 @@ namespace WebApplication1.Models.Member
 
                 using (var command = conn.CreateCommand())
                 {
-                    command.CommandText = "Insert Into Member (StoreID,MemberID,AccountID,MemberName,MobilPhone,EMail,InputDate,InputUser) VALUES(@StoreID,@MemberID,@AccountID,@MemberName,@MobilPhone,@EMail,CURDATE(),@InputUser)";
+                    command.CommandText = "Insert Into Member (StoreID,MemberID,AccountID,MemberName,MobilPhone,EMail,Birthday,InputDate,InputUser) VALUES(@StoreID,@MemberID,@AccountID,@MemberName,@MobilPhone,@EMail,@Birthday,CURDATE(),@InputUser)";
                     command.Parameters.AddWithValue("@StoreID", storeId);
                     command.Parameters.AddWithValue("@MemberID", member.MemberID);
                     command.Parameters.AddWithValue("@AccountID", member.MemberID);
                     command.Parameters.AddWithValue("@MemberName", member.MemberName);
                     command.Parameters.AddWithValue("@MobilPhone", member.MobilPhone);
                     command.Parameters.AddWithValue("@EMail", member.EMail);
+                    command.Parameters.AddWithValue("@Birthday", member.Birthday);
                     command.Parameters.AddWithValue("@InputUser", InputUserID);
                     command.ExecuteNonQuery();
 
