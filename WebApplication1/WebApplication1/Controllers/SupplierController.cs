@@ -75,7 +75,6 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Edit(Models.Supplier.Supplier postback)
         {
             try
@@ -141,7 +140,6 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -186,7 +184,6 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult Create(Models.Supplier.Supplier postback)
         {
 
