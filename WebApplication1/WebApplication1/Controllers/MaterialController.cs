@@ -263,7 +263,6 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();

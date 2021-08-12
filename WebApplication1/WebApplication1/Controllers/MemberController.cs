@@ -204,7 +204,6 @@ namespace WebApplication1.Controllers
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -237,12 +236,16 @@ namespace WebApplication1.Controllers
 
             foreach (var item in query)
             {
+                string Birthday = "";
+                if(item.Birthday != null)Birthday = item.Birthday.Value.ToString("yyyy-MM-dd");
+                      
                 var jo = new JObject
                 {
                     {"MemberID", item.MemberID},
                     {"MemberName", item.MemberName},
                     {"MobilPhone", item.MobilPhone},
                     {"EMail", item.EMail},
+                    {"Birthday", Birthday},
                 };
                 jObjects.Add(jo);
             }
