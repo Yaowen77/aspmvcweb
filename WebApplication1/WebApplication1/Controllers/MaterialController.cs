@@ -40,7 +40,7 @@ namespace WebApplication1.Controllers
                     if (type == 0)
                     {
                         Models.Material.MaterialSearch.MaterialList = new Models.Material.Material().Get_Material(SearchString);
-                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize);
+                        var material = Models.Material.MaterialSearch.MaterialList.OrderBy(x => x.MaterialID).ToPagedList(page, pageSize).FirstOrDefault();
                         return View(material);
                     }
                     else

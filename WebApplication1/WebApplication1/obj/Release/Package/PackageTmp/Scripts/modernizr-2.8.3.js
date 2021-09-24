@@ -371,7 +371,8 @@ window.Modernizr = (function( window, document, undefined ) {
     /*>>testallprops*/
     /**
      * testPropsAll tests a list of DOM properties we want to check against.
-     *   We specify literally ALL possible (known and/or likely) properties on
+     *   We specify literally ALL possible (known and/or 
+     *   ly) properties on
      *   the element including the non-vendor prefixed one, for forward-
      *   compatibility.
      */
