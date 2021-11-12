@@ -10,6 +10,8 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Infrastructure.MemberResults;
 using WebApplication1.Models.Member;
+using Microsoft.Reporting.WebForms;
+using MySql.Data.MySqlClient;
 
 namespace WebApplication1.Controllers
 {
@@ -175,13 +177,33 @@ namespace WebApplication1.Controllers
 
         }
 
+
+        public ActionResult Report()
+        {
+            ReportViewer reportViewer = new ReportViewer
+            {
+                ProcessingMode = ProcessingMode.Local,
+                AsyncRendering = false,
+                SizeToReportContent = true,
+                ZoomMode = ZoomMode.FullPage,
+                ShowPrintButton = true //顯示列印鈕
+                
+            };
+            reportViewer.LocalReport.EnableExternalImages = true;
+            reportViewer.LocalReport.ReportPath = $"{Request.MapPath(Request.ApplicationPath)}Report\\Report1.rdlc";
+            reportViewer.LocalReport.DataSources.Add(new ReportDataSource("DataSet1", MemberSearch.MemberList));
+            reportViewer.LocalReport.Refresh();
+
+            ViewBag.ReportViewer = reportViewer;
+            return View();
+        }
+
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -214,12 +236,16 @@ namespace WebApplication1.Controllers
 
             foreach (var item in query)
             {
+                string Birthday = "";
+                if(item.Birthday != null)Birthday = item.Birthday.Value.ToString("yyyy-MM-dd");
+                      
                 var jo = new JObject
                 {
                     {"MemberID", item.MemberID},
                     {"MemberName", item.MemberName},
                     {"MobilPhone", item.MobilPhone},
                     {"EMail", item.EMail},
+                    {"Birthday", Birthday},
                 };
                 jObjects.Add(jo);
             }

@@ -24,8 +24,8 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">基本資料<b class="caret"></b></a>
                         <ul class="dropdown-menu">
-                            <li>@Html.ActionLink("商品類別", "Index", "Category", new {type = 0 }, new {})</li>
-                            <li>@Html.ActionLink("廠商資料", "Index", "Home")</li>
+                            <li>@Html.ActionLink("商品類別", "Index", "Category", new { type = 0 }, new { })</li>
+                            <li>@Html.ActionLink("廠商資料", "Index", "Supplier")</li>
                             <li>@Html.ActionLink("商品基本資料", "Index", "Material", new { type = 0 }, new { })</li>
                         </ul>
                     </li>
@@ -36,7 +36,7 @@
                     <li>@Html.ActionLink("庫存異動", "Contact", "Home")</li>
                     <li>@Html.ActionLink("門市營運", "Contact", "Home")</li>
                     <li>@Html.ActionLink("營運報表", "Contact", "Home")</li>
-                    <li>@Html.ActionLink("登出", "Logout", "Login")</li>
+                    <li>@Html.ActionLink(" 登出", "Logout", "Login", new { }, new { @class = "glyphicon glyphicon-log-in" })</li>
                 </ul>
             </div>
         </div>

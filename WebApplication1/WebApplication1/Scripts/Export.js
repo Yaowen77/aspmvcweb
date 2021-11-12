@@ -13,7 +13,7 @@
 
     });*/
 
-    ExportClick = function (ConttollerName) {  
+    ExportClick = function (ConttollerName) {
         ExportData(ConttollerName);
     }
 
@@ -43,7 +43,7 @@
 
         $.ajax({
             type: 'post',
-            url: Router.action(ConttollerName, 'HasData'),     
+            url: Router.action(ConttollerName, 'HasData'),
             dataType: 'json',
             cache: false,
             async: false,

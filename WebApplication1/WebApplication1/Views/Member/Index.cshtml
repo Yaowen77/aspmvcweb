@@ -37,7 +37,8 @@
                                 <div class="column">
                                     <button type="submit" class="btn btn-primary queryButton"> 搜尋</button>
                                     @Html.ActionLink("新增會員", "Create", new { }, new { @class = "btn btn-primary" })
-                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Member')" >
+                                    @Html.ActionLink("報表", "Report", new { }, new { @class = "btn btn-primary" })
+                                    <button type="button" class="btn btn-primary" id="ButtonExport" name="ButtonExport" onclick="ExportClick('Member')">
                                         匯出資料
                                     </button>
                                 </div>
@@ -75,25 +76,37 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().EMail)
         </th>
         <th>
-
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Birthday)
         </th>
     </tr>
 
     @foreach (var md in this.Model)
     {
-        <tr>
-            <td>
-                @Html.ActionLink("編輯", "Edit", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-pencil" })
-            </td>
-            <td>
-                @Html.ActionLink("刪除", "Delete", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.MemberID + "')" })
-            </td>
-            <td>@md.MemberID</td>
-            <td>@md.MemberName</td>
-            <td>@md.MobilPhone</td>
-            <td>@md.EMail</td>
-        </tr>
+<tr>
+    <td>
+        @Html.ActionLink("編輯", "Edit", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-pencil" })
+    </td>
+    <td>
+        @Html.ActionLink("刪除", "Delete", new { id = md.MemberID }, new { @class = "glyphicon glyphicon-trash", @onclick = "return Confirm_Form('" + md.MemberID + "')" })
+    </td>
+    <td>@md.MemberID</td>
+    <td>@md.MemberName</td>
+    <td>@md.MobilPhone</td>
+    <td>@md.EMail</td>
+    @{
+        if (@md.Birthday != null)
+        {
+        <td>@md.Birthday.Value.ToString("yyyy-MM-dd")</td>
+
+        }
+        else
+        {
+            <td>@md.Birthday</td>
+
+        }
     }
+</tr>
+        }
 </table>
 @Html.PagedListPager((IPagedList)Model, x => Url.Action("Index", new { page = x }))
 
