@@ -244,8 +244,6 @@ D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\Web
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.pdb
-D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\RdlCompile.cache
-D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\RdlCompile.compiled
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\SqlServerTypes\x64\msvcr120.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\SqlServerTypes\x64\SqlServerSpatial140.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\SqlServerTypes\x86\msvcr120.dll
@@ -327,3 +325,5 @@ D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\pt\Micros
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\ru\Microsoft.ReportViewer.WinForms.resources.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-CHS\Microsoft.ReportViewer.WinForms.resources.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
+D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\NKLibrary.dll
+D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\NKLibrary.pdb

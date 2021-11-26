@@ -9,21 +9,32 @@ using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Infrastructure.MemberResults;
 using WebApplication1.Models.Category;
+using NKLibrary;
+
 
 namespace WebApplication1.Controllers
 {
     public class CategoryController : Controller
     {
+
+
         // GET: Category
+        [Authorize]
         public ActionResult Index(int type ,string id,int page = 1, int pageSize = 15)
         {
-            if ((string)Session["UserID"] == null)
+            //if ((string)Session["UserID"] == null)
+            //{
+            //    return RedirectToAction("Index", "Login");
+            //}
+
+            NKDLL  NKDLL = new NKDLL();
+            if (!NKDLL.LoginCheck())
             {
                 return RedirectToAction("Index", "Login");
             }
+     
 
-
-             String SearchString = id;
+            String SearchString = id;
             try
             {
 
@@ -62,6 +73,7 @@ namespace WebApplication1.Controllers
         }
 
 
+        [Authorize]
         public ActionResult Delete(int type, string categoryID)
         {
 
@@ -99,6 +111,7 @@ namespace WebApplication1.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Create(int type)
         {
             ViewBag.Type = type;
@@ -108,6 +121,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(int Type , Category postback)
         {
             try
@@ -152,6 +166,7 @@ namespace WebApplication1.Controllers
         }
 
 
+        [Authorize]
         public ActionResult Edit(int Type, string categoryID)
         {
             try
@@ -179,6 +194,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(int Type, Category postback)
         {
             try
@@ -217,6 +233,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -225,6 +242,7 @@ namespace WebApplication1.Controllers
             return Content(JsonConvert.SerializeObject(jo), "application/json");
         }
 
+        [Authorize]
         public ActionResult Export()
         {
             var exportSpource = this.GetExportDataWithAllColumns();
@@ -241,6 +259,7 @@ namespace WebApplication1.Controllers
             };
         }
 
+        [Authorize]
         private JArray GetExportDataWithAllColumns()
         {
             //var query = db.Customers.OrderBy(x => x.CustomerID);

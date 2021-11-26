@@ -153,7 +153,7 @@ namespace WebApplication1.Models.Material
                         {
                             result.Add(new Models.Material.Supplier()
                             {
-                                SupplierID = "",
+                                SupplierID1 = "",
                                 FullName = ""
                             });
 
@@ -162,7 +162,7 @@ namespace WebApplication1.Models.Material
                                 result.Add(new Models.Material.Supplier()
                                 {
 
-                                    SupplierID = (string)reader["SupplierID"],
+                                    SupplierID1 = (string)reader["SupplierID"],
                                     FullName = (reader.IsDBNull(reader.GetOrdinal("FullName"))) ? "" : (string)reader["FullName"]
 
                                 });

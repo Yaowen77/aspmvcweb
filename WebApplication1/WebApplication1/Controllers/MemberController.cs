@@ -12,6 +12,7 @@ using WebApplication1.Infrastructure.MemberResults;
 using WebApplication1.Models.Member;
 using Microsoft.Reporting.WebForms;
 using MySql.Data.MySqlClient;
+using NKLibrary;
 
 namespace WebApplication1.Controllers
 {
@@ -20,14 +21,17 @@ namespace WebApplication1.Controllers
     {
         // GET: Member
 
+        [Authorize]
         public ActionResult Index(string id, int page = 1, int pageSize = 15)
         {
-            if ((string)Session["UserID"] == null)
+   
+            NKDLL NKDLL = new NKDLL();
+            if (!NKDLL.LoginCheck())
             {
                 return RedirectToAction("Index", "Login");
             }
-            
-            
+
+
             String SearchString = id;
 
 
@@ -55,6 +59,7 @@ namespace WebApplication1.Controllers
         }
 
 
+        [Authorize]
         public ActionResult Edit(string id)
         {
             try
@@ -80,6 +85,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Edit(Member postback, HttpPostedFileBase file)
         {
             try
@@ -151,7 +157,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-      
+        [Authorize]
         public ActionResult Delete(string id)
         {
 
@@ -178,6 +184,7 @@ namespace WebApplication1.Controllers
         }
 
 
+        [Authorize]
         public ActionResult Report()
         {
             ReportViewer reportViewer = new ReportViewer
@@ -198,12 +205,14 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -212,6 +221,7 @@ namespace WebApplication1.Controllers
             return Content(JsonConvert.SerializeObject(jo), "application/json");
         }
 
+        [Authorize]
         public ActionResult Export()
         {
             var exportSpource = this.GetExportDataWithAllColumns();
@@ -227,6 +237,8 @@ namespace WebApplication1.Controllers
                 ExportData = dt
             };
         }
+
+        [Authorize]
 
         private JArray GetExportDataWithAllColumns()
         {
@@ -255,6 +267,7 @@ namespace WebApplication1.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public ActionResult Create(Member postback, HttpPostedFileBase file)
         {
 

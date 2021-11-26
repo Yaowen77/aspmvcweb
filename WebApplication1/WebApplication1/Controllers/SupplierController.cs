@@ -8,18 +8,22 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using WebApplication1.Infrastructure.MemberResults;
+using NKLibrary;
 
 namespace WebApplication1.Controllers
 {
     public class SupplierController : Controller
     {
         // GET: Supplier
+        [Authorize]
         public ActionResult Index(string id, int page = 1, int pageSize = 15)
         {
-            if ((string)Session["UserID"] == null)
+            NKDLL NKDLL = new NKDLL();
+            if (!NKDLL.LoginCheck())
             {
                 return RedirectToAction("Index", "Login");
             }
+
 
 
             String SearchString = id;
@@ -50,6 +54,7 @@ namespace WebApplication1.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Edit(string id)
         {
             try
@@ -75,6 +80,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult Edit(Models.Supplier.Supplier postback)
         {
             try
@@ -109,6 +115,7 @@ namespace WebApplication1.Controllers
         }
 
 
+        [Authorize]
         public ActionResult Delete(string id)
         {
 
@@ -134,12 +141,14 @@ namespace WebApplication1.Controllers
 
         }
 
+        [Authorize]
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
+        [Authorize]
         public ActionResult HasData()
         {
             JObject jo = new JObject();
@@ -148,6 +157,7 @@ namespace WebApplication1.Controllers
             return Content(JsonConvert.SerializeObject(jo), "application/json");
         }
 
+        [Authorize]
         public ActionResult Export()
         {
             var exportSpource = this.GetExportDataWithAllColumns();
@@ -164,6 +174,7 @@ namespace WebApplication1.Controllers
             };
         }
 
+        [Authorize]
         private JArray GetExportDataWithAllColumns()
         {
             var query = Models.Supplier.SupplierSearch.SupplierList.OrderBy(x => x.SupplierID);
@@ -184,6 +195,7 @@ namespace WebApplication1.Controllers
 
 
         [HttpPost]
+        [Authorize]
         public ActionResult Create(Models.Supplier.Supplier postback)
         {
 

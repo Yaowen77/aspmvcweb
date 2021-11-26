@@ -7,7 +7,7 @@ namespace WebApplication1.Models.Material
 {
     public class Supplier
     {
-        public string SupplierID { get; set; }
+        public string SupplierID1 { get; set; }
         public string FullName { get; set; }
     }
 }
