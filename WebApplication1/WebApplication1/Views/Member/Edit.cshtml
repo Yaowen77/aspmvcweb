@@ -5,8 +5,6 @@
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/jqueryval")
 <script>
     $(document).ready(function () {
 
@@ -27,6 +25,26 @@
         });
 
     });
+
+    function onLoadBinaryFile() {
+        var theFile = document.getElementById("file");
+
+        // 確定選取了一個二進位檔案，而非其他格式。
+        if (theFile.files.length != 0 && theFile.files[0].type.match(/image.*/)) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var theImg = document.getElementById("Image1");
+                theImg.src = e.target.result;
+            };
+            reader.onerror = function (e) {
+                alert("例外狀況，無法讀取圖片檔");
+            };
+            reader.readAsDataURL(theFile.files[0]);   // 讀取圖片檔案。
+        }
+        else {
+            alert("請選取一個圖片檔");
+        }
+    }
 </script>
 
 @if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
@@ -57,11 +75,12 @@
                     {
                         var base64 = Convert.ToBase64String(Model.MemberImage);
                         var imgSrc = String.Format("data:image/jpg;base64,{0}", base64);
-                        <img src="@imgSrc" width="200" height="200" />
+                        <img src="@imgSrc" width="200" height="200" ID="Image1" />
                     }
                     else
-                    {
-                        <img src="" width="200" height="200" />
+                    {                   
+                         string str = "/Images/DefaultMember.jpg";                  
+                        <img src="@str" width="200" height="200" ID="Image1" />
                     }
                 }
             </div>
@@ -120,7 +139,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-1" })
             <div class="col-md-10">
-                @Html.TextBox("file", "", new { type = "file", accept = ".jpg" })
+                @Html.TextBox("file", "", new { type = "file", accept = ".jpg", onchange = "onLoadBinaryFile()" })
             </div>
         </div>
 

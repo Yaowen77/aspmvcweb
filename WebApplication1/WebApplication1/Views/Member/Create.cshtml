@@ -4,81 +4,109 @@
     ViewBag.Title = "Create";
     Layout = "~/Views/Shared/_Layout2.cshtml";
 }
+<script>
+    function onLoadBinaryFile() {
+        var theFile = document.getElementById("file");
 
-
+        // 確定選取了一個二進位檔案，而非其他格式。
+        if (theFile.files.length != 0 && theFile.files[0].type.match(/image.*/)) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                var theImg = document.getElementById("Image1");
+                theImg.src = e.target.result;
+            };
+            reader.onerror = function (e) {
+                alert("例外狀況，無法讀取圖片檔");
+            };
+            reader.readAsDataURL(theFile.files[0]);   // 讀取圖片檔案。
+        }
+        else {
+            alert("請選取一個圖片檔");
+        }
+    }
+ </script>
 
 @using (Html.BeginForm("Create", "Member", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
 
-<div class="form-horizontal">
-    <h2>會員資料新增作業</h2>
-    <hr />
+    <div class="form-horizontal">
+        <h2>會員資料新增作業</h2>
+        <hr />
 
-    @if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
-    {
-        //@Html.Label("info", (string)ViewBag.ResultMessage, new { @class = "text-info" })
-        <script type="text/javascript">
+        @if (ViewBag.ResultMessage != null)//判斷如果有訊息，則顯示。
+        {
+            //@Html.Label("info", (string)ViewBag.ResultMessage, new { @class = "text-info" })
+            <script type="text/javascript">
             var message = @Html.Raw(Json.Encode(ViewBag.ResultMessage));
             alert(message);
-        </script>
-    }
+</script>
+        }
 
-    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-    <div class="form-group">
-        @Html.LabelFor(model => model.MemberID, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-2">
+                @{
+                    string str = "/Images/DefaultMember.jpg";
+                }
+                <img src="@str" width="200" height="200" ID="Image1" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberID, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MemberID, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MemberID, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MemberName, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MemberName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MemberName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.MobilPhone, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.MobilPhone, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.MobilPhone, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-1" })
+            <div class="col-md-10">
+                @Html.TextBox("file", "", new { type = "file", accept = ".jpg", onchange = "onLoadBinaryFile()" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="存檔" class="btn btn-default" />
+            </div>
         </div>
     </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.MemberName, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.MemberName, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MemberName, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.MobilPhone, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.MobilPhone, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.MobilPhone, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.Birthday, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.EditorFor(model => model.Birthday, new { htmlAttributes = new { @class = "form-control" } })
-            @Html.ValidationMessageFor(model => model.Birthday, "", new { @class = "text-danger" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        @Html.LabelFor(model => model.ImageName, htmlAttributes: new { @class = "control-label col-md-1" })
-        <div class="col-md-10">
-            @Html.TextBox("file", "", new { type = "file", accept = ".jpg" })
-        </div>
-    </div>
-
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <input type="submit" value="存檔" class="btn btn-default" />
-        </div>
-    </div>
-</div>
 }
 
 <div>

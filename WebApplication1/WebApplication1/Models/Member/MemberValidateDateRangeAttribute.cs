@@ -13,8 +13,14 @@ namespace WebApplication1.Models.Member.Validation
 
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-   
-            DateTime dt = (DateTime)value;
+            DateTime dt;
+            if (value == null)
+            {
+                dt = new DateTime(1991, 01, 01, 00, 00, 02);
+            }
+            else { 
+                dt = (DateTime)value;
+            }
 
             if (value != null && dt >= Convert.ToDateTime(MyStartDate) && dt <= Convert.ToDateTime(MyEndDate))
             {
