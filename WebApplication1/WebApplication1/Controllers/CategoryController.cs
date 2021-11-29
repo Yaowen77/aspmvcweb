@@ -17,7 +17,10 @@ namespace WebApplication1.Controllers
     public class CategoryController : Controller
     {
 
-
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.RedirectToAction("Index").ExecuteResult(this.ControllerContext);
+        }
         // GET: Category
         [Authorize]
         public ActionResult Index(int type ,string id,int page = 1, int pageSize = 15)

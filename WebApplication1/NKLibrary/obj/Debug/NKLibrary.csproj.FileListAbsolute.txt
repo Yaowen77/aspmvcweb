@@ -3,4 +3,3 @@ D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\NKLibrary\bin\Debug\NKLibrary
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\NKLibrary\obj\Debug\NKLibrary.csproj.CoreCompileInputs.cache
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\NKLibrary\obj\Debug\NKLibrary.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\NKLibrary\obj\Debug\NKLibrary.pdb
-D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\NKLibrary\obj\Debug\NKLibrary.csprojAssemblyReference.cache

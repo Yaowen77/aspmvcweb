@@ -14,6 +14,10 @@ namespace WebApplication1.Controllers
 {
     public class SupplierController : Controller
     {
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.RedirectToAction("Index").ExecuteResult(this.ControllerContext);
+        }
         // GET: Supplier
         [Authorize]
         public ActionResult Index(string id, int page = 1, int pageSize = 15)

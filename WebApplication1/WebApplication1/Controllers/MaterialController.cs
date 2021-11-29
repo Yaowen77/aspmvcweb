@@ -14,6 +14,12 @@ namespace WebApplication1.Controllers
 {
     public class MaterialController : Controller
     {
+
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.RedirectToAction("Index").ExecuteResult(this.ControllerContext);
+        }
+
         // GET: Material
         [Authorize]
         public ActionResult Index(int type, string id, int page = 1, int pageSize = 15)

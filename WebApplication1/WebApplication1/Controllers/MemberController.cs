@@ -16,12 +16,15 @@ using NKLibrary;
 
 namespace WebApplication1.Controllers
 {
+    
+    [Authorize]
 
     public class MemberController : Controller
     {
         // GET: Member
 
         [Authorize]
+        [ActionName("Index")]
         public ActionResult Index(string id, int page = 1, int pageSize = 15)
         {
    
@@ -56,6 +59,11 @@ namespace WebApplication1.Controllers
                 return View();
             }
 
+        }
+
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.RedirectToAction("Index").ExecuteResult(this.ControllerContext);
         }
 
 

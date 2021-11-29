@@ -13,11 +13,22 @@ namespace WebApplication1
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
+
+
+            //routes.MapRoute(
+            //    name: "Default",
+            //    url: "{controller}/{action}/{id}",
+            //    defaults: new { controller = "Login", action = "Index", id = UrlParameter.Optional }
+            //);
+
+
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Login", action = "Index", id = UrlParameter.Optional }
+                name: "Default",   // 自行命名。
+                url: "{controller}/{action}/{id}",    // 預設值 id。
+                                                                                             
+                defaults: new { controller = "Login", action = "Index2", id = UrlParameter.Optional } 
             );
+
 
         }
     }

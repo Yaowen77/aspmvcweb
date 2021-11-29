@@ -26,5 +26,11 @@ namespace WebApplication1.Controllers
 
             return View();
         }
+
+        protected override void HandleUnknownAction(string actionName)
+        {
+            this.RedirectToAction("Index").ExecuteResult(this.ControllerContext);
+        }
+
     }
 }
