@@ -239,7 +239,6 @@ D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-Hant\S
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-Hant\System.Web.WebPages.resources.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-Hant\System.Web.WebPages.Deployment.resources.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-Hant\System.Web.WebPages.Razor.resources.dll
-D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csprojAssemblyReference.cache
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CoreCompileInputs.cache
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.CopyComplete
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.dll
@@ -327,3 +326,4 @@ D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-CHS\Mi
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\zh-CHT\Microsoft.ReportViewer.WinForms.resources.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\NKLibrary.dll
 D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\bin\NKLibrary.pdb
+D:\Frontend_Space\ChuuKa\aspmvcweb\WebApplication1\WebApplication1\obj\Debug\WebApplication1.csproj.AssemblyReference.cache

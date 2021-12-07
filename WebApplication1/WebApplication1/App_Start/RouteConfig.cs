@@ -22,6 +22,12 @@ namespace WebApplication1
             //);
 
 
+            //routes.MapRoute(
+            //    name: "Error",
+            //    url: "Error/{code}",
+            //    defaults: new { controller = "Login", action = "Index", code = UrlParameter.Optional }
+            //);
+
             routes.MapRoute(
                 name: "Default",   // 自行命名。
                 url: "{controller}/{action}/{id}",    // 預設值 id。
